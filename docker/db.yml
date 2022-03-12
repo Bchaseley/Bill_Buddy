@@ -1,0 +1,18 @@
+version: "2"
+
+networks:
+  db-network:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: "pg-main"
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    networks:
+      - "db-network"
+    environment:
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
+      - 'POSTGRES_DB=${POSTGRES_DB}'
