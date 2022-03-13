@@ -8,13 +8,12 @@ const pool = new Pool({
 const register = (body) => {
     return new Promise(function (resolve, reject) {
         const { firstName, lastName, email, password } = body
-        pool.query('INSERT INTO merchants (firstName, lastName, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [firstName, lastName, email, password], (error, results) => {
+        pool.query('INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [firstName, lastName, email, password], (error, results) => {
             if (error) {
                 console.log("didnt work")
                 reject(error)
             }
-            console.log("it worked")
-            resolve(`A new merchant has been added added: ${results.rows[0]}`)
+            resolve(`A new user has been added added: ${results}`)
             
         })
     })
