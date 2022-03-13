@@ -8,11 +8,13 @@ module.exports = {
             process.env.JWT_SECRET,
             (err, payload) => {
                 if (err) {
-                    res.status(401).json({ verified: false });
+                    res.status(403).json({ verified: false });
                 } else {
+                    req._jwt = payload;
                     next();
                 }
             }
         );
     },
+
 };
