@@ -5,7 +5,7 @@ const jwt = require("../middleware/jwt");
 module.exports = app => {
 
     //all routes for users
-    app.post("/register", transactions.register);
+    app.post("/register", user.register);
     app.post("/login", user.login);
 
     app.use("/api/*", jwt.authenticate)
