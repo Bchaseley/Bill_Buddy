@@ -5,16 +5,16 @@ const pool = new Pool({
     password: process.env.POSTGRES_PASSWORD
 });
 
-// const getTrans = () => {
-//     return new Promise(function (resolve, reject) {
-//         pool.query('SELECT * FROM transactions', (error, results) => {
-//             if (error) {
-//                 reject(error);
-//             };
-//             resolve(results.rows);
-//         })
-//     })
-// };
+const getTrans = () => {
+    return new Promise(function (resolve, reject) {
+        pool.query('SELECT * FROM transactions', (error, results) => {
+            if (error) {
+                reject(error);
+            };
+            resolve(results.rows);
+        })
+    })
+};
 const addTrans = (body) => {
     return new Promise(function (resolve, reject) {
         const { name, amount, datePaid } = body;
