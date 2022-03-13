@@ -10,7 +10,8 @@ module.exports = app => {
 
     app.use("/api/*", jwt.authenticate)
 
-    app.get("/api/transactions", transactions.read);
+    app.get("/api/transactions", transactions.readAll);
+    app.get("/api/transaction/:id", transactions.read);
     app.post("/api/transaction", transactions.create);
     app.put("/api/transaction", transactions.update);
     app.delete("/api/transaction", transactions.delete);
