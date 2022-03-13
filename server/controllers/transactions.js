@@ -1,5 +1,5 @@
 const Transaction = global.Models.Transaction;
-const User = globals.Models.User;
+const User = global.Models.User;
 
 module.exports = {
 
