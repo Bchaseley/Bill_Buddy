@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 8000;
 
 global.Models = require("./models");
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
@@ -14,12 +16,14 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(express.static("./client/build"));
-
-require('./routes/app.routes')(app);
+app.use(cors({ credentials: true, origin: "http://localhost:8000/" }));
 
 app.get("/", (req, res) => {
     res.sendFile("./client/build/index.html");
 });
+
+require('./routes/app.routes')(app);
+
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

@@ -5,12 +5,12 @@ const RecTrans = () => {
 
     const [allTrans, setAllTrans] = useState([]);
 
-    // useEffect(() => {
-    //     axios.get('/api/allTrans')
-    //         .then(res => {
-    //             setAllTrans(res.data);
-    //         });
-    // }, [])
+    useEffect(() => {
+        axios.get('/api/transactions', { withCredentials: true, })
+            .then(res => {
+                setAllTrans(res.data);
+            });
+    })
 
     return <div>
         <h2>Recent Transactions</h2>

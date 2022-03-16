@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import { navigate } from '@reach/router';
 
 const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [errors, setErrors] = useState("");
+
+    const login = e => {
+        e.preventDefault();
+        axios.post('/login', { email, password }, { withCredentials: true })
+        navigate('/dash');
+        
+    }
 
 
     return (
         <div>
-            <form>
+            <form onSubmit={login}>
                 <div className="form">
                     <div className="subtitle">Log in!</div>
                     <div className="input-container ic2">

@@ -14,9 +14,13 @@ const CreateUser = () => {
     const addUser = e => {
         e.preventDefault();
         const newUser = { firstName, lastName, email, password }
-        console.log(newUser);
         axios.post('/register', newUser)
-            .then(navigate('/dash'));
+            .then((res) => {
+                navigate('/dash')
+            }).catch((err) => {
+                console.log(err);
+                setErrors(err.response.data.msg);
+            });
     }
 
     return <div>
@@ -49,6 +53,7 @@ const CreateUser = () => {
                     <label className="placeholder">Confirm Password</label>
                 </div>
                 <button type="text" className="submit">Submit</button>
+                <p>{errors ? errors : ""}</p>
             </div>
         </form>
     </div>

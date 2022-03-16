@@ -11,7 +11,7 @@ const AddTrans = () => {
     const addTrans = e => {
         e.preventDefault();
         const newTrans = { name, amount, datePaid }
-        axios.post('/api/trans', newTrans)
+        axios.post('/api/transaction', newTrans)
             .then(navigate('/dash'));
     }
 
