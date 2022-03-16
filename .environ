@@ -1,0 +1,5 @@
+export POSTGRES_USER=brian \
+  POSTGRES_PASSWORD=Leet1337 \
+  POSTGRES_DB=brians_db \
+  POSTGRES_SALT=foobarbaz123 \
+  JWT_SECRET=LeetHax
