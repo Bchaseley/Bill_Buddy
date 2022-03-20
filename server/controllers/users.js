@@ -9,19 +9,17 @@ module.exports = {
     try {
       if (!req.body.password)
         throw new Error("Missing or invalid password.");
-
-      let values = _.pick(req.body, ["email", "password", "firstName", "lastName"]);
+      let values = _.pick(req.body, ["email", "password", "first_name", "last_name"]);
       let user = await User.forge(values).save();
       let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-      res.cookie(user, token, { httpOnly: true });
+      res.cookie('user', token, { httpOnly: true });
       res.status(200).json({});
     } catch (e) {
       res.status(500).json(e.message ? { error: e.message } : e)
-    }
+    };
   },
 
   login: async (req, res) => {
-
     try {
       let email = req.body.email,
         password = req.body.password;
@@ -31,37 +29,44 @@ module.exports = {
       if (user === null) {
         throw new Error("Invalid login attempt. Create an account first.");
       } else {
-        console.log(user.id);
         validPassword = await bcrypt.compare(password, user.attributes.password);
         if (!validPassword) {
           throw new Error("Invalid login attempt. Wrong Password.");
         } else {
-          res.cookie(user, jwt.sign({ id: user.attributes.id }, process.env.JWT_SECRET), { httpOnly: true });
+          res.cookie('user', jwt.sign({ id: user.id }, process.env.JWT_SECRET), { httpOnly: true });
           res.status(200).json({});
         }
       };
     } catch (e) {
       res.status(500).json(e.message ? { error: e.message } : e)
-    }
+    };
   },
 
   logout: async (req, res) => {
-    res
-      .cookie("user", jwt.sign({ _id: "" }, process.env.JWT_SECRET), {
-        httpOnly: true,
-        maxAge: 0,
-      })
-      .json({ msg: "ok" });
+    res.cookie("user", jwt.sign({ id: "" }, process.env.JWT_SECRET), {
+      httpOnly: true,
+      maxAge: 0,
+    }).json({ msg: "ok" });
   },
 
   read: async (req, res) => {
     try {
       let id = req.query.params;
-      let user = await new User({ 'id': id }).fetch();
+      let user = await User.where('id', id).fetch();
       res.status(200).json(user);
     } catch (e) {
       res.status(500).json(e.message ? { error: e.message } : e);
-    }
+    };
+  },
+
+  findLogged: async (req, res) => {
+    try {
+      let id = req._jwt.id;
+      let user = await User.where('id', id).fetch();
+      res.status(200).json(user);
+    } catch (e) {
+      res.status(500).json(e.message ? { error: e.message } : e);
+    };
   },
 
   update: async (req, res) => {
@@ -75,7 +80,7 @@ module.exports = {
     } catch (e) {
       console.log(e);
       res.status(500).json(e.message ? { error: e.message } : e)
-    }
+    };
   },
 
   delete: async (req, res) => {
@@ -86,7 +91,7 @@ module.exports = {
     } catch (e) {
       console.log(e);
       res.status(500).json(e.message ? { error: e.message } : e)
-    }
+    };
   }
 
 };

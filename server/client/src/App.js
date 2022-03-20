@@ -2,6 +2,7 @@ import './App.css';
 import { Router } from "@reach/router";
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
+import SearchResults from './components/SearchResults';
 
 function App() {
   return (

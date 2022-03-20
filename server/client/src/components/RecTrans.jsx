@@ -10,7 +10,7 @@ const RecTrans = () => {
             .then(res => {
                 setAllTrans(res.data);
             });
-    })
+    }, [])
 
     return <div>
         <h2>Recent Transactions</h2>
@@ -23,10 +23,11 @@ const RecTrans = () => {
                 </div>
                 <div className="table-content">
                     {allTrans.map((trans, idx) => {
+                        let date = new Date(trans.date_paid.toString());
                         return <div className="table-row">
                             <td className="table-data">{trans.name}</td>
                             <td className="table-data">{trans.amount}</td>
-                            <td className="table-data">{trans.datePaid}</td>
+                            <td className="table-data">{date.toDateString()}</td>
                         </div>
                     })}
                 </div>

@@ -11,8 +11,15 @@ const Login = () => {
     const login = e => {
         e.preventDefault();
         axios.post('/login', { email, password }, { withCredentials: true })
-        navigate('/dash');
-        
+            .then((res) => {
+                console.log(res);
+                navigate("/dash");
+            })
+            .catch((err) => {
+                console.log(err);
+                setErrors(err.response.data.msg);
+            });
+
     }
 
 
@@ -32,6 +39,7 @@ const Login = () => {
                         <label for="email" className="placeholder">Password</label>
                     </div>
                     <button type="text" class="submit">Submit</button>
+                    <p>{errors ? errors : ""}</p>
                 </div>
             </form>
         </div>
