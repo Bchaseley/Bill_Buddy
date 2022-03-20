@@ -9,6 +9,17 @@
   margin-bottom: 5vh;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header button {
+  width: 10vw;
+  margin-right: 2vw;
+}
+
 .Home{
   display: flex;
   justify-content: space-around;

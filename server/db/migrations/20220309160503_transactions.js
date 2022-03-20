@@ -7,7 +7,7 @@ exports.up = function(knex) {
         table.increments();
         table.string('name').notNullable().index();
         table.string('amount');
-        table.string('datePaid').notNullable().index();
+        table.timestamp('date_paid').notNullable().index();
         table.integer('user_id').references('id').inTable('users');
         table.timestamps();
     });

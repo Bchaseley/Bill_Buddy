@@ -4,8 +4,8 @@ import { navigate } from '@reach/router';
 
 const CreateUser = () => {
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
     const [email, setEmail] = useState();
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,7 +13,7 @@ const CreateUser = () => {
 
     const addUser = e => {
         e.preventDefault();
-        const newUser = { firstName, lastName, email, password }
+        const newUser = { first_name, last_name, email, password }
         axios.post('/register', newUser)
             .then((res) => {
                 navigate('/dash')
@@ -28,12 +28,12 @@ const CreateUser = () => {
             <div className="form">
                 <div className="subtitle">Create an account!</div>
                 <div className="input-container ic1">
-                    <input className="input" type="text" onChange={(e) => setFirstName(e.target.value)} value={firstName} placeholder=" " />
+                    <input className="input" type="text" onChange={(e) => setFirstName(e.target.value)} value={first_name} placeholder=" " />
                     <div className="cut"></div>
                     <label className="placeholder">First name</label>
                 </div>
                 <div className="input-container ic2">
-                    <input className="input" type="text" onChange={(e) => setLastName(e.target.value)} value={lastName} placeholder=" " />
+                    <input className="input" type="text" onChange={(e) => setLastName(e.target.value)} value={last_name} placeholder=" " />
                     <div className="cut"></div>
                     <label className="placeholder">Last name</label>
                 </div>

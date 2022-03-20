@@ -5,13 +5,13 @@ const _ = require("lodash");
 module.exports = {
 
   readAll: async (req, res) => {
-    let id = req._jwt.user_id;
-
     try {
-      let user = await new User({ 'id': id }).fetch({ withRelated: ["transactions"] });
-      let transactions = user.related("transactions");
+      const user_id = req._jwt.id;
+      let transactions = await Transaction.where('user_id', user_id).fetchAll();
+      console.log(transactions);
       res.status(200).json(transactions);
     } catch (e) {
+      console.log(e);
       res.status(500).json(e.message ? { error: e.message } : e);
     }
   },
@@ -19,7 +19,6 @@ module.exports = {
   read: async (req, res) => {
     try {
       let name = _.pick(req.body, ["name"]);
-      console.log("hello");
       let transaction = await new Transaction({ 'name': name }).fetch();
       res.status(200).json(transaction);
     } catch (e) {
@@ -27,9 +26,24 @@ module.exports = {
     }
   },
 
-  create: async (req, res) => {
+  search: async (req, res) => {
     try {
-      let values = _.pick(req.body, ["name", "amount", "datePaid"]);
+      console.log(req.body);
+      let name = _.pick(req.body, ["name"]);
+      console.log(name);
+      let transactions = await Transaction.where( 'name', name ).fetchAll();
+      console.log(transactions);
+      res.status(200).json(transactions);
+    } catch (e) {
+      res.status(500).json(e.message ? { error: e.message } : e);
+    }
+  },
+
+  create: async (req, res) => {
+    let user_id = req._jwt.id;
+    try {
+      let values = _.pick(req.body, ["name", "amount", "date_paid"]);
+      values.user_id = user_id;
       let transaction = await Transaction.forge(values).save();
       res.status(200).json(transaction);
     } catch (e) {

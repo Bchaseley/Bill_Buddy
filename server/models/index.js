@@ -11,6 +11,6 @@ const knex = require('knex')({
 const bookshelf = require('bookshelf')(knex)
 
 module.exports = {
-    User: require("./user.js")(bookshelf),
+    User: require("./user")(bookshelf),
     Transaction: require("./transaction")(bookshelf)
 };
