@@ -16,7 +16,7 @@ module.exports = app => {
     //routes for transactions
     app.get("/api/transactions", transactions.readAll);
     app.get("/api/transaction/:id", transactions.read);
-    app.post("/api/transactions/search", transactions.search);
+    app.get("/api/transactions/:name", transactions.search);
     app.post("/api/transaction", transactions.create);
     app.put("/api/transaction/:id", transactions.update);
     app.delete("/api/transaction/:id", transactions.delete);

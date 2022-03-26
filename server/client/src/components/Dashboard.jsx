@@ -5,15 +5,16 @@ import SearchTrans from "./forms/SearchTrans";
 import RecTrans from "./RecTrans";
 import { navigate } from '@reach/router';
 
-const Dashboard = () => {
+const Dashboard = ({ setResults }) => {
 
     const [loggedUser, setLoggedUser] = useState({});
+    const [added, setAdded] = useState(0);
 
     useEffect(() => {
         axios.get('/api/user/findLogged', { withCredentials: true })
-        .then((res) =>{
-            setLoggedUser(res.data);
-        })
+            .then((res) => {
+                setLoggedUser(res.data);
+            })
     }, []);
 
     const logout = () => {
@@ -28,12 +29,12 @@ const Dashboard = () => {
         </div>
         <div className="DashDiv">
             <div className="RecentTrans">
-                <RecTrans />
+                <RecTrans added={added}/>
             </div>
             <div className="DivLine"></div>
             <div className="DashForms">
-                <AddTrans />
-                <SearchTrans />
+                <AddTrans setAdded={setAdded} />
+                <SearchTrans setResults={setResults} />
             </div>
         </div>
     </div>

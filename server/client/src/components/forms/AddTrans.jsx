@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { navigate } from '@reach/router';
 
-const AddTrans = () => {
+const AddTrans = ({ setAdded }) => {
 
     const [name, setName] = useState("");
     const [amount, setAmount] = useState();
@@ -11,11 +11,15 @@ const AddTrans = () => {
     const addTrans = e => {
         e.preventDefault();
         const newTrans = { name, amount, date_paid }
-        axios.post('/api/transaction', newTrans);
-        navigate('/dash');
-        setName("");
-        setAmount("");
-        setDatePaid("");
+        axios.post('/api/transaction', newTrans)
+            .then(
+                setAdded(+1),
+                setName(""),
+                setAmount(""),
+                setDatePaid("")
+            )
+
+
     }
 
     return <div>
