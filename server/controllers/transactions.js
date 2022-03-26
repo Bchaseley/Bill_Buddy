@@ -6,9 +6,8 @@ module.exports = {
 
   readAll: async (req, res) => {
     try {
-      const user_id = req._jwt.id;
+      const user_id = _.get(req, ["_jwt", "id"]);
       let transactions = await Transaction.where('user_id', user_id).fetchAll();
-      console.log(transactions);
       res.status(200).json(transactions);
     } catch (e) {
       console.log(e);
@@ -19,7 +18,7 @@ module.exports = {
   read: async (req, res) => {
     try {
       let name = _.pick(req.body, ["name"]);
-      let transaction = await new Transaction({ 'name': name }).fetch();
+      let transaction = await Transaction.where('name', name).fetch();
       res.status(200).json(transaction);
     } catch (e) {
       res.status(500).json(e.message ? { error: e.message } : e);
@@ -27,21 +26,32 @@ module.exports = {
   },
 
   search: async (req, res) => {
-    try {
-      console.log(req.body);
-      let name = _.pick(req.body, ["name"]);
-      console.log(name);
-      let transactions = await Transaction.where( 'name', name ).fetchAll();
-      console.log(transactions);
-      res.status(200).json(transactions);
-    } catch (e) {
-      res.status(500).json(e.message ? { error: e.message } : e);
+    if (req.query.name) {
+      try {
+        let name = req.query.name;
+        let transactions = await Transaction.where("name", "LIKE", `%${name}%`).fetchAll()
+        res.status(200).json(transactions);
+      } catch (e) {
+        console.log(e);
+        res.status(500).json(e.message ? { error: e.message } : e);
+      }
+    } else {
+      try{
+        let datePaid = req.query.datePaid;
+        let transactions = await Transaction.where("date_paid", "LIKE", `%${datePaid}%`).fetchAll()
+        res.status(200).json(transactions);
+      }catch (e) {
+        console.log(e);
+        res.status(500).json(e.message ? { error: e.message } : e);
+      }
     }
+
   },
 
   create: async (req, res) => {
-    let user_id = req._jwt.id;
+
     try {
+      const user_id = _.get(req, ["_jwt", "id"]);
       let values = _.pick(req.body, ["name", "amount", "date_paid"]);
       values.user_id = user_id;
       let transaction = await Transaction.forge(values).save();

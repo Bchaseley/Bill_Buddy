@@ -3,18 +3,17 @@ import React, { useState } from "react";
 import { navigate, Router } from "@reach/router";
 import SearchResults from "../SearchResults";
 
-const SearchTrans = () => {
+const SearchTrans = ({ setResults }) => {
 
     const [name, setName] = useState("");
     const [datePaid, setDatePaid] = useState();
-    const [results, setResults] = useState([]);
     const [errors, setErrors] = useState("");
 
     const searchTrans = (e) => {
         e.preventDefault();
         if (name) {
-            axios.post('/api/transactions/search', { name }, { withCredentials: true })
-                .then((res) => {
+            axios.get('/api/transactions/search', { params: { name: name } }, { withCredentials: true })
+                .then(res => {
                     setResults(res.data);
                     navigate('/search');
                 })
@@ -23,8 +22,9 @@ const SearchTrans = () => {
                     setErrors(err.response.data.msg);
                 });
         } else {
-            axios.post('/api/transactions/search', { datePaid }, { withCredentials: true })
-                .then((res) => {
+            axios.get('/api/transactions/search', { params: { datePaid: datePaid } }, { withCredentials: true })
+                .then(res => {
+                    console.log(res.data);
                     setResults(res.data);
                     navigate('/search');
                 })
@@ -52,9 +52,6 @@ const SearchTrans = () => {
                 </div>
                 <button type="text" className="submit">Submit</button>
             </div>
-            <Router>
-                <SearchResults results={results} path='/search' />
-            </Router>
         </form>
     </div>
 }

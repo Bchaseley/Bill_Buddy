@@ -1,7 +1,6 @@
 const bookshelf = require('./index');
 const Promise = require("bluebird");
 const bcrypt = require("bcrypt");
-const models = require('../models');
 
 module.exports = function (bookshelf) {
 
@@ -25,7 +24,7 @@ module.exports = function (bookshelf) {
         },
 
         transactions() {
-            return this.hasMany(bookshelf.model.transactions)
+            return this.hasMany(require('./transaction')(bookshelf));
         }
     });
 };

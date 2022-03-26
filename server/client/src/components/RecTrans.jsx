@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
-const RecTrans = () => {
+const RecTrans = ({ added }) => {
 
     const [allTrans, setAllTrans] = useState([]);
 
@@ -10,7 +11,7 @@ const RecTrans = () => {
             .then(res => {
                 setAllTrans(res.data);
             });
-    }, [])
+    }, [added])
 
     return <div>
         <h2>Recent Transactions</h2>
@@ -22,12 +23,12 @@ const RecTrans = () => {
                     <div className="header__item">Date Paid</div>
                 </div>
                 <div className="table-content">
-                    {allTrans.map((trans, idx) => {
-                        let date = new Date(trans.date_paid.toString());
+                    {allTrans.map((transaction, idx) => {
+                        let date = moment.utc(transaction.date_paid);
                         return <div className="table-row">
-                            <td className="table-data">{trans.name}</td>
-                            <td className="table-data">{trans.amount}</td>
-                            <td className="table-data">{date.toDateString()}</td>
+                            <td className="table-data">{transaction.name}</td>
+                            <td className="table-data">{transaction.amount}</td>
+                            <td className="table-data">{date.format("MMM-DD-YYYY")}</td>
                         </div>
                     })}
                 </div>

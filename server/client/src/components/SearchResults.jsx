@@ -1,4 +1,6 @@
-const SearchResults = ( results ) => {
+import moment from 'moment';
+
+const SearchResults = ({ results }) => {
 
     return <div>
         <h2>Search Results</h2>
@@ -11,11 +13,11 @@ const SearchResults = ( results ) => {
                 </div>
                 <div className="table-content">
                     {results.map((transaction, idx) => {
-                        let date = new Date(transaction.date_paid.toString());
+                        let date = moment.utc(transaction.date_paid);
                         return <div className="table-row">
                             <td className="table-data">{transaction.name}</td>
                             <td className="table-data">{transaction.amount}</td>
-                            <td className="table-data">{date.toDateString()}</td>
+                            <td className="table-data">{date.format("MMM-DD-YYYY")}</td>
                         </div>
                     })}
                 </div>
